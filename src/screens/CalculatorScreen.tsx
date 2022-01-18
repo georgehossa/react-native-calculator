@@ -1,53 +1,69 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {theme} from '../theme/Default';
 import CalcButton from '../components/CalcButton';
+import useCalculator from '../hooks/useCalculator';
 
 const CalculatorScreen = () => {
-  const [result, setResult] = useState('0');
-  const [operation, setOperation] = useState('0');
-
-  const clean = () => {
-    setResult('0');
-    setOperation('0');
-  };
-
-  const createOperation = (operationNumber: string) => {
-    setOperation(operation + operationNumber);
-  };
+  const {
+    createNumber,
+    operation,
+    result,
+    clear,
+    handlePositiveNegative,
+    handleDelButton,
+    handleDivision,
+    handleMultiplication,
+    handleSubtraction,
+    handleAddition,
+    calculate,
+  } = useCalculator();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.operationText}>{operation}</Text>
-      <Text style={styles.resultText}>{result}</Text>
+      {operation !== '0' && (
+        <Text
+          style={styles.operationText}
+          numberOfLines={1}
+          adjustsFontSizeToFit>
+          {operation}
+        </Text>
+      )}
+      <Text style={styles.resultText} numberOfLines={1} adjustsFontSizeToFit>
+        {result}
+      </Text>
       <View style={theme.row}>
-        <CalcButton text="C" color="primary" action={clean} />
-        <CalcButton text="+/-" color="primary" action={null} />
-        <CalcButton text="del" color="primary" action={null} />
-        <CalcButton text="÷" color="secondary" action={null} />
+        <CalcButton text="C" color="primary" action={clear} />
+        <CalcButton
+          text="+/-"
+          color="primary"
+          action={handlePositiveNegative}
+        />
+        <CalcButton text="del" color="primary" action={handleDelButton} />
+        <CalcButton text="÷" color="secondary" action={handleDivision} />
       </View>
       <View style={theme.row}>
-        <CalcButton text="7" action={createOperation} />
-        <CalcButton text="8" action={createOperation} />
-        <CalcButton text="9" action={createOperation} />
-        <CalcButton text="×" color="secondary" action={null} />
+        <CalcButton text="7" action={createNumber} />
+        <CalcButton text="8" action={createNumber} />
+        <CalcButton text="9" action={createNumber} />
+        <CalcButton text="×" color="secondary" action={handleMultiplication} />
       </View>
       <View style={theme.row}>
-        <CalcButton text="4" action={createOperation} />
-        <CalcButton text="5" action={createOperation} />
-        <CalcButton text="6" action={createOperation} />
-        <CalcButton text="−" color="secondary" action={null} />
+        <CalcButton text="4" action={createNumber} />
+        <CalcButton text="5" action={createNumber} />
+        <CalcButton text="6" action={createNumber} />
+        <CalcButton text="−" color="secondary" action={handleSubtraction} />
       </View>
       <View style={theme.row}>
-        <CalcButton text="1" action={createOperation} />
-        <CalcButton text="2" action={createOperation} />
-        <CalcButton text="3" action={createOperation} />
-        <CalcButton text="+" color="secondary" action={null} />
+        <CalcButton text="1" action={createNumber} />
+        <CalcButton text="2" action={createNumber} />
+        <CalcButton text="3" action={createNumber} />
+        <CalcButton text="+" color="secondary" action={handleAddition} />
       </View>
       <View style={theme.row}>
-        <CalcButton text="0" action={createOperation} size="large" />
-        <CalcButton text="." action={createOperation} />
-        <CalcButton text="=" color="secondary" action={null} />
+        <CalcButton text="0" action={createNumber} size="large" />
+        <CalcButton text="." action={createNumber} />
+        <CalcButton text="=" color="secondary" action={calculate} />
       </View>
     </View>
   );
